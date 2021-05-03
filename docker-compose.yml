@@ -1,0 +1,49 @@
+version: '3.9'
+services:
+    gallery-frontend:
+        build: 
+            gallery-frontend/.
+        deploy:
+            restart_policy:
+                condition: on-failure
+                max_attempts: 5
+        ports:
+            - "8080:8080"
+        volumes: 
+            - paint-images:/go/src/assets/image
+        depends_on:
+            - mysql
+        tty: true
+    gallery-backend:
+        build: 
+            gallery-backend/.
+        deploy:
+            restart_policy:
+                condition: on-failure
+                max_attempts: 5
+        ports:
+            - "8081:8080"
+        volumes: 
+            - paint-images:/go/src/assets/image
+        depends_on:
+            - mysql
+        tty: true
+    mysql:
+        build:
+            mysql/.
+        restart: always
+        security_opt:
+            - seccomp:unconfined
+    phpmyadmin:
+        depends_on:
+            - mysql
+        image: phpmyadmin/phpmyadmin
+        container_name: phpmyadmin
+        restart: always
+        ports:
+            - "8082:80"
+        environment:
+            PMA_HOST: mysql
+volumes:
+    paint-images:
+        

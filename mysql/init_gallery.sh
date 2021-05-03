@@ -1,0 +1,1 @@
+mysql -uroot -proot < /backup/gallery_backup.sql
