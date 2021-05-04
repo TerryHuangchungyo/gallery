@@ -12,7 +12,7 @@ services:
         volumes: 
             - paint-images:/go/src/assets/image
         depends_on:
-            - mysql
+            - gallery-db
         tty: true
     gallery-backend:
         build: 
@@ -26,24 +26,24 @@ services:
         volumes: 
             - paint-images:/go/src/assets/image
         depends_on:
-            - mysql
+            - gallery-db
         tty: true
-    mysql:
+    gallery-db:
         build:
-            mysql/.
+            gallery-db/.
         restart: always
         security_opt:
             - seccomp:unconfined
     phpmyadmin:
         depends_on:
-            - mysql
+            - gallery-db
         image: phpmyadmin/phpmyadmin
         container_name: phpmyadmin
         restart: always
         ports:
             - "8082:80"
         environment:
-            PMA_HOST: mysql
+            PMA_HOST: gallery-db
 volumes:
     paint-images:
         

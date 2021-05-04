@@ -2,6 +2,8 @@ package repository
 
 import (
 	"database/sql"
+	"fmt"
+	"gallery-backend/config"
 	. "gallery-backend/utils"
 	"time"
 
@@ -12,7 +14,16 @@ var galleryDB *sql.DB
 
 func init() {
 	var err error
-	galleryDB, err = sql.Open("mysql", "root:root@tcp(mysql)/gallery")
+
+	dbType := config.GalleryDB.DatabaseType
+	dsn := fmt.Sprintf("%s:%s@tcp(%s)/%s",
+		config.GalleryDB.User,
+		config.GalleryDB.Password,
+		config.GalleryDB.Host,
+		config.GalleryDB.DatabaseName,
+	)
+
+	galleryDB, err = sql.Open(dbType, dsn)
 
 	if err != nil {
 		ErrorLog.Printf("Connect to db error: %v\n", err)
