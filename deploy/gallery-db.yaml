@@ -1,0 +1,49 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: gallery-db
+  labels:
+    app: gallery
+spec:
+  ports:
+  - port: 3306
+    name: mysql-db-port
+  clusterIP: None
+  selector:
+    app: gallery
+---
+apiVersion: apps/v1
+kind: StatefulSet
+metadata:
+  name: gallery-mysql-db
+spec:
+  selector:
+    matchLabels:
+      db: gallery
+  serviceName: "gallery-db"
+  replicas: 1 # by default is 1
+  template:
+    metadata:
+      labels:
+        db: gallery
+    spec:
+      terminationGracePeriodSeconds: 10
+      containers:
+      - name: mysql
+        image: mysql:8.0.21
+        ports:
+        - containerPort: 3306
+          name: mysql-db-port
+        env:
+        - name: MYSQL_ROOT_PASSWORD
+          valueFrom:
+            secretKeyRef:
+              name: gallery-db-secret
+              key: root-password
+        volumeMounts:
+        - name: gallery-db-pvc-volume
+          mountPath: /var/lib/mysql
+      volumes:
+        - name: gallery-db-pvc-volume
+          persistentVolumeClaim:
+            claimName: gallery-db-pvc
