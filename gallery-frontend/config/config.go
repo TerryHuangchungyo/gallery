@@ -13,3 +13,9 @@ var GalleryDB = struct {
 	"root",
 	"gallery",
 }
+
+var App = struct {
+	Port string
+}{
+	":8080",
+}

@@ -1,0 +1,32 @@
+# gallery-frontend-deploy.yaml
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: gallery-frontend
+  labels:
+    app: gallery-frontend
+spec:
+  replicas: 3
+  selector:
+    matchLabels:
+      app: gallery-frontend
+  template:
+    metadata:
+      labels:
+        app: gallery-frontend
+    spec:
+      containers:
+      - name: gallery-frontend
+        image: gcr.io/constant-wonder-305916/gallery-frontend
+        ports:
+        - containerPort: 8080
+        env:
+        - name: PROJECT_ENV
+          value: "gcp"
+        volumeMounts:
+        - name: gallery-image-hub
+          mountPath: /go/src/assets/image
+      volumes:
+        - name: gallery-image-hub
+          persistentVolumeClaim:
+            claimName: gallery-image-hub-pvc

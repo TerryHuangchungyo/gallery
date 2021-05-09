@@ -1,0 +1,9 @@
+[App]
+Port=":8080"
+
+[GalleryDB]
+DatabaseType="mysql"
+Host="gallery-db"
+User="root"
+Password="root"
+DatabaseName="gallery"

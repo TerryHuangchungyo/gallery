@@ -1,6 +1,7 @@
 package main
 
 import (
+	"gallery-frontend/config"
 	"gallery-frontend/controller"
 	. "gallery-frontend/utils"
 	"net/http"
@@ -9,7 +10,7 @@ import (
 
 func main() {
 	server := &http.Server{
-		Addr:           ":8080",
+		Addr:           config.App.Port,
 		Handler:        controller.Mux,
 		ReadTimeout:    10 * time.Second,
 		WriteTimeout:   10 * time.Second,
