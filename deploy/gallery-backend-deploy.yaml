@@ -1,4 +1,4 @@
-# gallery-frontend-deploy.yaml
+# gallery-backend-deploy.yaml
 apiVersion: apps/v1
 kind: Deployment
 metadata:
